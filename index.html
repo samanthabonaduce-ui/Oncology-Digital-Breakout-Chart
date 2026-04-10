@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oncology Digital Charting Breakout</title>
+    <style>
+        :root {
+            --epic-blue: #005fb2;
+            --epic-light: #eef4fb;
+            --epic-dark: #1a1a1a;
+            --success-green: #2e7d32;
+            --warning-orange: #ed6c02;
+            --error-red: #d32f2f;
+            --locked-gray: #9e9e9e;
+            --flow-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: var(--epic-dark);
+        }
+
+        .chart-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: var(--epic-blue);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .patient-banner {
+            background: #d1e3f8;
+            padding: 10px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.9em;
+            border-bottom: 2px solid var(--epic-blue);
+            color: #333;
+        }
+
+        .main-layout {
+            display: flex;
+            min-height: 800px;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: #f8f9fa;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="radio"] { display: none; }
+
+        .tab-label {
+            display: block;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            font-weight: 600;
+            color: #555;
+            transition: 0.2s;
+            font-size: 0.85em;
+            text-transform: uppercase;
+        }
+
+        .tab-label:hover { background: #e9ecef; }
+
+        .content-area {
+            flex: 1;
+            padding: 30px;
+            position: relative;
+            background: white;
+        }
+
+        .puzzle-section { display: none; }
+
+        #tab1:checked ~ .main-layout .content-area #puzzle1,
+        #tab2:checked ~ .main-layout .content-area #puzzle2,
+        #tab3:checked ~ .main-layout .content-area #puzzle3,
+        #tab4:checked ~ .main-layout .content-area #puzzle4,
+        #tab5:checked ~ .main-layout .content-area #puzzle5,
+        #tab6:checked ~ .main-layout .content-area #puzzle6,
+        #tab7:checked ~ .main-layout .content-area #puzzle7,
+        #tab8:checked ~ .main-layout .content-area #puzzle8,
+        #tab9:checked ~ .main-layout .content-area #puzzle9,
+        #tab10:checked ~ .main-layout .content-area #puzzle10,
+        #tab11:checked ~ .main-layout .content-area #puzzle11,
+        #tab12:checked ~ .main-layout .content-area #puzzle12,
+        #tab13:checked ~ .main-layout .content-area #puzzle13 {
+            display: block;
+        }
+
+        #tab1:checked ~ .main-layout .sidebar label[for="tab1"],
+        #tab2:checked ~ .main-layout .sidebar label[for="tab2"],
+        #tab3:checked ~ .main-layout .sidebar label[for="tab3"],
+        #tab4:checked ~ .main-layout .sidebar label[for="tab4"],
+        #tab5:checked ~ .main-layout .sidebar label[for="tab5"],
+        #tab6:checked ~ .main-layout .sidebar label[for="tab6"],
+        #tab7:checked ~ .main-layout .sidebar label[for="tab7"],
+        #tab8:checked ~ .main-layout .sidebar label[for="tab8"],
+        #tab9:checked ~ .main-layout .sidebar label[for="tab9"],
+        #tab10:checked ~ .main-layout .sidebar label[for="tab10"],
+        #tab11:checked ~ .main-layout .sidebar label[for="tab11"],
+        #tab12:checked ~ .main-layout .sidebar label[for="tab12"],
+        #tab13:checked ~ .main-layout .sidebar label[for="tab13"] {
+            background: white;
+            color: var(--epic-blue);
+            border-left: 6px solid var(--epic-blue);
+        }
+
+        .lock-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        .unlock-content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f1f8e9;
+            border: 2px solid var(--success-green);
+            border-radius: 6px;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        .pass:valid + .unlock-content { display: block; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .clue-card {
+            background: white;
+            padding: 15px;
+            border-left: 5px solid var(--warning-orange);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            border-left-width: 5px;
+        }
+
+        .lock-container {
+            background: var(--epic-light);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #b3d7ff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chart-container">
+    <input type="radio" name="tabs" id="tab1" checked>
+    <input type="radio" name="tabs" id="tab2">
+    <input type="radio" name="tabs" id="tab3">
+    <input type="radio" name="tabs" id="tab4">
+    <input type="radio" name="tabs" id="tab5">
+    <input type="radio" name="tabs" id="tab6">
+    <input type="radio" name="tabs" id="tab7">
+    <input type="radio" name="tabs" id="tab8">
+    <input type="radio" name="tabs" id="tab9">
+    <input type="radio" name="tabs" id="tab10">
+    <input type="radio" name="tabs" id="tab11">
+    <input type="radio" name="tabs" id="tab12">
+    <input type="radio" name="tabs" id="tab13">
+
+    <div class="header">
+        <div style="font-weight: bold; font-size: 1.1em;">Epic Hyperspace - Oncology Module</div>
+        <div style="font-size: 0.8em;">User: RN_STUDENT_2024 | Dept: ONCOLOGY_FLOOR_4</div>
+    </div>
+
+    <div class="patient-banner">
+        <span><strong>DOE, JANE</strong></span>
+        <span><strong>MRN:</strong> 992-83-47</span>
+        <span><strong>Age:</strong> 56Y</span>
+        <span style="color: var(--error-red); font-weight: bold;">⚠️ ALLERGY: LATEX</span>
+    </div>
+
+    <div class="main-layout">
+        <div class="sidebar">
+            <label for="tab1" class="tab-label">📋 ADMISSION</label>
+            <label for="tab2" class="tab-label">👤 HISTORY/PHYSICAL</label>
+            <label for="tab3" class="tab-label">📝 ORDERS</label>
+            <label for="tab4" class="tab-label">📷 IMAGING</label>
+            <label for="tab5" class="tab-label">📄 PATHOLOGY REPORT</label>
+            <label for="tab6" class="tab-label">☢️ RADIATION ALERT</label>
+            <label for="tab7" class="tab-label">🧪 LAB</label>
+            <label for="tab8" class="tab-label">💊 MAR</label>
+            <label for="tab9" class="tab-label">💓 VITALS</label>
+            <label for="tab10" class="tab-label">🔍 NURSING</label>
+            <label for="tab11" class="tab-label">📖 PATIENT EDUCATION</label>
+            <label for="tab12" class="tab-label">🤝 CARE TEAM</label>
+            <label for="tab13" class="tab-label">📦 DISCHARGE SUMMARY</label>
+        </div>
+
+        <div class="content-area">
+
+            <!-- 1. ADMISSION -->
+            <div id="puzzle1" class="puzzle-section">
+                <h2>ADMISSION ENCOUNTER</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Clinical Context:</strong> Mrs. Jane Doe, 56, is admitted to the oncology unit following a suspicious mass finding. She is experiencing significant anxiety and reports a 15lb weight loss over the last two months.</p>
+                </div>
+                <div class="lock-container">
+                    <p>Patient is currently in the <strong>Promotion</strong> phase. What is the length of time associated with the latent period of undetectable growth? (Range in years):</p>
+                    <input type="text" class="lock-input pass" placeholder="E.G. #-##" pattern="1-40" required>
+                    <div class="unlock-content">
+                        <p>✅ 1 to 40 years confirmed. <strong>Code: 8812</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. HISTORY/PHYSICAL -->
+            <div id="puzzle2" class="puzzle-section">
+                <h2>HISTORY & PHYSICAL</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Review of Systems:</strong> Patient presents with vague abdominal pain. During history taking, you discuss primary prevention strategies. She asks which lifestyle factors are most critical to modify to reduce cancer risk.</p>
+                </div>
+                <div class="lock-container">
+                    <p><strong>Task:</strong> Based on the "Prevention & Detection" notes, identify two primary lifestyle factors to avoid or limit (Alphabetical, no spaces):</p>
+                    <input type="text" class="lock-input pass" placeholder="FACTOR1FACTOR2" pattern="[Aa]lcohol[Tt]obacco" required>
+                    <div class="unlock-content">
+                        <p>✅ Modifiable risks identified. <strong>Code: 4421</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. ORDERS -->
+            <div id="puzzle3" class="puzzle-section">
+                <h2>PROVIDER ORDERS</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Treatment Goals:</strong> The oncologist is outlining the plan. The cancer is responsive to therapy but cannot be completely eradicated. The focus is on reducing tumor burden and extending life.</p>
+                </div>
+                <div class="lock-container">
+                    <p><strong>Task:</strong> What is the clinical "goal" name for this type of treatment? (One word):</p>
+                    <input type="text" class="lock-input pass" placeholder="TREATMENT GOAL" pattern="[Cc]ontrol" required>
+                    <div class="unlock-content">
+                        <p>✅ Goal: Control. <strong>Code: 1099</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. IMAGING -->
+            <div id="puzzle4" class="puzzle-section">
+                <h2>DIAGNOSTIC IMAGING</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Radiology Review:</strong> Comparing diagnostic methods. The MRI is highly sensitive, but palpation is used for physical screening.</p>
+                </div>
+                <div class="lock-container">
+                    <p><strong>Task:</strong> To be detected by palpation, the tumor must reach what size in centimeters? (Format: #cm):</p>
+                    <input type="text" class="lock-input pass" placeholder="ENTER SIZE" pattern="1[Cc][Mm]" required>
+                    <div class="unlock-content">
+                        <p>✅ 1 cm (Critical Mass). <strong>Code: 6019</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. PATHOLOGY REPORT -->
+            <div id="puzzle5" class="puzzle-section">
+                <h2>PATHOLOGY REPORT</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Biopsy Results:</strong> Pathologist notes cells are <u>highly undifferentiated</u> (Histologic Grade) and the clinical workup indicates <u>limited local spread</u> to adjacent tissues (Clinical Stage).</p>
+                </div>
+                <div class="lock-container">
+                    <label for="pass5">Auth Code (S#G#):</label>
+                    <input type="text" class="lock-input pass" id="pass5" placeholder="ENTER CODE" pattern="[Ss]2[Gg]4" required>
+                    <div class="unlock-content">
+                        <p>✅ Stage II / Grade IV verified. <strong>Code: 7741</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. RADIATION ALERT -->
+            <div id="puzzle6" class="puzzle-section">
+                <h2>RADIATION SAFETY ALERT</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Safety Protocol:</strong> Patient has internal brachytherapy. Nursing must follow specific ALARA (As Low As Reasonably Achievable) principles.</p>
+                </div>
+                <div class="lock-container">
+                    <p><strong>Task:</strong> List the 3 Safety Principles (Alphabetical, no spaces):</p>
+                    <input type="text" class="lock-input pass" placeholder="PRINCIPLE1PRINCIPLE2..." pattern="[Dd]istance[Ss]hielding[Tt]ime" required>
+                    <div class="unlock-content">
+                        <p>✅ ALARA Protocols verified. <strong>Code: 2209</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. LAB -->
+            <div id="puzzle7" class="puzzle-section">
+                <h2>LAB RESULTS: TLS ALERT</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Metabolic Review:</strong> Patient is at risk for Tumor Lysis Syndrome (TLS) following chemotherapy induction.</p>
+                </div>
+                <div class="lock-container">
+                    <p><strong>Task:</strong> List the 3 "Hyper-" conditions found in TLS (Alphabetical, no spaces):</p>
+                    <input type="text" class="lock-input pass" placeholder="HYPER...HYPER...HYPER..." pattern="[Hh]yperkalemia[Hh]yperphosphatemia[Hh]yperuricemia" required>
+                    <div class="unlock-content">
+                        <p>✅ Metabolic triad identified. <strong>Code: 9115</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. MAR -->
+            <div id="puzzle8" class="puzzle-section">
+                <h2>MAR: MEDICATION ADMINISTRATION</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Medication:</strong> Epoetin alfa (Procrit) is due. You must check the lab value to ensure safe administration.</p>
+                </div>
+                <div class="lock-container">
+                    <p><strong>Task:</strong> Hold the dose if the Hemoglobin (Hgb) level is at or above what value? (Format: HGB##):</p>
+                    <input type="text" class="lock-input pass" placeholder="HGB??" pattern="[Hh][Gg][Bb]11" required>
+                    <div class="unlock-content">
+                        <p>✅ Med safety threshold confirmed. <strong>Code: 0462</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. VITALS (UPDATED) -->
+            <div id="puzzle9" class="puzzle-section">
+                <h2>VITAL SIGNS</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Fever Protocol:</strong> Due to the patient having a significantly low WBC count, you are monitoring for signs and symptoms of infection. You know that even a low-grade fever in this population is a medical emergency.</p>
+                </div>
+                <div class="lock-container">
+                    <p><strong>Task:</strong> What is the specific precaution you will use when caring for this patient? (Two words):</p>
+                    <input type="text" class="lock-input pass" placeholder="PRECAUTION TYPE" pattern="[Rr]everse[Ii]solation" required>
+                    <div class="unlock-content">
+                        <p>✅ Reverse Isolation identified. <strong>Code: 3004</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. NURSING -->
+            <div id="puzzle10" class="puzzle-section">
+                <h2>NURSING ASSESSMENT</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Radiation Side Effect:</strong> Assessment of skin in the radiation field shows excoriation and weeping fluid (Wet Desquamation).</p>
+                </div>
+                <div class="lock-container">
+                    <p><strong>Task:</strong> What type of dressing is used for wet desquamation? (Two words):</p>
+                    <input type="text" class="lock-input pass" placeholder="DRESSING TYPE" pattern="[Ss]terile[Gg]auze" required>
+                    <div class="unlock-content">
+                        <p>✅ Sterile Gauze confirmed. <strong>Code: 3382</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. PATIENT EDUCATION -->
+            <div id="puzzle11" class="puzzle-section">
+                <h2>PATIENT EDUCATION</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Mucositis Care:</strong> The patient has stomatitis. They ask about oral care and food choices.</p>
+                </div>
+                <div class="lock-container">
+                    <p><strong>Task:</strong> Based on the "Care of the Patient" sheet, what broad category of substances should the nurse tell the patient to AVOID? (One word):</p>
+                    <input type="text" class="lock-input pass" placeholder="AVOID WHAT?" pattern="[Ii]rritants" required>
+                    <div class="unlock-content">
+                        <p>✅ Irritants must be avoided. <strong>Code: 5510</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. CARE TEAM -->
+            <div id="puzzle12" class="puzzle-section">
+                <h2>CARE TEAM COORDINATION</h2>
+                <hr>
+                <div class="clue-card">
+                    <p><strong>Interdisciplinary Support:</strong> The patient is nearing discharge and will require specialized care at home. The goal is to focus on comfort and quality of life for a terminal diagnosis with < 6 months prognosis.</p>
+                </div>
+                <div class="lock-container">
+                    <p><strong>Task:</strong> What specific subcategory of Palliative Care provides this philosophy of care? (One word):</p>
+                    <input type="text" class="lock-input pass" placeholder="TYPE OF CARE" pattern="[Hh]ospice" required>
+                    <div class="unlock-content">
+                        <p>✅ Hospice care confirmed. <strong>Code: 1201</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13. DISCHARGE SUMMARY -->
+            <div id="puzzle13" class="puzzle-section" style="text-align: center;">
+                <h2>FINAL DISCHARGE SUMMARY</h2>
+                <hr>
+                <div class="lock-container" style="max-width: 650px; margin: 0 auto; background: white;">
+                    <p>Enter all validation codes to sign the chart:</p>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                        <input type="text" class="lock-input" placeholder="C1" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C2" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C3" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C4" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C5" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C6" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C7" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C8" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C9" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C10" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C11" style="text-align: center;">
+                        <input type="text" class="lock-input" placeholder="C12" style="text-align: center;">
+                    </div>
+                    
+                     <details style="margin-top: 25px;">
+                        <summary style="background: var(--epic-blue); color: white; padding: 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">SIGN & LOCK CHART</summary>
+                        <div style="padding: 20px; background: #e8f5e9; margin-top: 15px; border: 2px solid var(--success-green);">
+                            <h2 style="color: var(--success-green); margin-top: 0;">CHART VERIFIED</h2>
+                            <p>Patient: DOE, JANE | MRN: 992-83-47</p>
+                            <div style="margin-top: 20px; font-weight: bold; font-family: 'Brush Script MT', cursive; font-size: 1.8em; border-top: 1px solid #ccc; padding-top: 10px;">/s/ Registered Nurse Student</div>
+                        </div>
+                     </details>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
