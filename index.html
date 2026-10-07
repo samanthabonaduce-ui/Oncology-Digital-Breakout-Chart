@@ -157,6 +157,8 @@
             margin-bottom: 25px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             border: 1px solid #eee;
+            border-left-width: 5px;
+            border-left-color: var(--epic-blue);
             line-height: 1.6;
         }
 
@@ -169,6 +171,60 @@
             font-size: 0.95em;
             border-radius: 4px;
             line-height: 1.5;
+        }
+
+        /* EHR Table Styling */
+        .ehr-table-box {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .ehr-table-title {
+            background: var(--epic-light);
+            padding: 10px 16px;
+            font-size: 0.78em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--epic-blue);
+            border-bottom: 1px solid #cbd5e1;
+        }
+
+        .ehr-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+            text-align: left;
+        }
+
+        .ehr-table th {
+            background: #f8fafc;
+            padding: 10px 16px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #334155;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .ehr-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1e293b;
+            white-space: pre-line;
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .ehr-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .ehr-table td:first-child {
+            font-weight: 600;
+            color: #0f172a;
+            width: 28%;
         }
 
         .lock-container {
@@ -202,6 +258,37 @@
             font-weight: bold;
         }
 
+        .unlock-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .next-tab-btn {
+            background: var(--success-green);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 14px;
+            font-size: 0.78em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .next-tab-btn:hover {
+            background: #1b5e20;
+        }
+
+        .unlock-rationale {
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: #334155;
+            font-weight: normal;
+            line-height: 1.5;
+        }
+
         .pass:valid + .unlock-content { display: block; }
 
         /* Flowchart Styling */
@@ -210,11 +297,11 @@
             flex-direction: column;
             align-items: center;
             gap: 15px;
-            margin: 20px 0;
+            margin: 20px 0 25px 0;
         }
         .flow-box {
             border: 2px solid var(--epic-blue);
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 8px;
             background: white;
             width: 80%;
@@ -334,8 +421,12 @@
                     </div>
                 </div>
 
-                <div style="margin-top: 40px; padding: 20px; background: #fffde7; border-radius: 8px; border: 1px solid #fbc02d; text-align: center;">
-                    <p><strong>Ready to Begin?</strong> Click on the <strong>ADMISSION (1)</strong> tab to start your shift.</p>
+                <div style="margin-top: 40px; padding: 20px; background: #fffde7; border-radius: 8px; border: 1px solid #fbc02d; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 15px;">
+                    <div>
+                        <p style="margin: 0; font-weight: bold; color: #0f172a;">Ready to Begin?</p>
+                        <p style="margin: 0; font-size: 0.9em; color: #334155;">Click on the <strong>ADMISSION (1)</strong> tab to start your shift.</p>
+                    </div>
+                    <button type="button" onclick="goToTab(1)" style="background: var(--epic-blue); color: white; border: none; border-radius: 6px; padding: 10px 20px; font-weight: bold; cursor: pointer;">Start Admission (Tab 1) &rarr;</button>
                 </div>
             </div>
 
@@ -344,28 +435,106 @@
                 <h2>ADMISSION ENCOUNTER</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
                 <div class="clinical-note">Subjective: Patient presents for evaluation of persistent cough and weight loss. 
-Objective: Patient reports being in the "Promotion" phase of development.</div>
+Objective: Patient reports being in the "Promotion" phase of development.
+• Oncology Pathophysiology Note: Cancer is a group of diseases characterized by uncontrolled and unregulated growth of cells (most diagnosed in those > age 55) due to defects in cell proliferation (loss of contact inhibition, defective apoptosis, altered tumor suppressor genes) and differentiation.</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">Pathophysiology Review: 3 Phases of Cancer Development</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Development Phase</th>
+                                <th>Cellular Characteristics &amp; Clinical Progression</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Phase 1: Initiation</td>
+                                <td>Starts w/ irreversible cell mutation (carcinogen or "just happens"). Cell may divide into a neoplasm, die (apoptosis), repair itself, or be destroyed by the immune system.</td>
+                            </tr>
+                            <tr>
+                                <td>Phase 2: Promotion</td>
+                                <td>Cell self-replication (can still stop at this point or be reversed by decreasing risk factors).
+Accompanied by a latent period of undetectable growth (length associated w/ mitotic rate of tissue of origin &amp; environmental factors: ? to ?? years).</td>
+                            </tr>
+                            <tr>
+                                <td>Phase 3: Progression</td>
+                                <td>&uarr; Cell growth rate of tumor; tumor develops its own blood supply (Angiogenesis); metastasis begins (most frequent sites: lungs, brain, bone, liver, &amp; adrenal glands).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>What is the length of time associated with the latent period of undetectable growth? (Range in years):</div>
                     <input type="text" class="lock-input pass" placeholder="E.G. #-##" pattern="1-40" required>
-                    <div class="unlock-content">✅ Validation Code: 8812</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 8812</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(2)">Next Section (2) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> During the Promotion phase (Phase 2), cell self-replication is accompanied by a latent period of undetectable growth that may range from 1 to 40 years depending on the mitotic rate of the tissue of origin and environmental factors.</div>
+                    </div>
                 </div>
             </div>
 
             <!-- 2. HISTORY -->
             <div id="puzzle2" class="puzzle-section">
-                <h2>HISTORY & PHYSICAL</h2><hr>
+                <h2>HISTORY &amp; PHYSICAL</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
                 <div class="clinical-note">Primary Prevention assessment. 
-Nurse Review: Assessing lifestyle factors that can be modified to stop cell self-replication.</div>
+Nurse Review: Assessing lifestyle factors that can be modified to stop cell self-replication.
+• Environmental &amp; Lifestyle Carcinogen Review: Carcinogens are cancer-causing agents capable of causing cell alterations (Radiation, Hormones, Chemicals, Viruses, and modifiable lifestyle substances).</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">Oncology Prevention &amp; Early Detection Framework</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Prevention Tier</th>
+                                <th>Clinical Strategies &amp; Screening Modalities</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Primary Prevention
+(Strategies to Reduce Risk)</td>
+                                <td>• Avoid or reduce exposure to carcinogens
+• Eat a balanced diet
+• Exercise regularly &amp; maintain a healthy weight
+• Limit [???????] intake &amp; avoid [???????] exposure</td>
+                            </tr>
+                            <tr>
+                                <td>Secondary Prevention
+(Screening &amp; Early Detection)</td>
+                                <td>• Mammography
+• Colonoscopy
+• Prostate exams (DRE)
+• Self-examination</td>
+                            </tr>
+                            <tr>
+                                <td>Known Carcinogens
+(Cell-Altering Agents)</td>
+                                <td>• Radiation &amp; Chemicals
+• Hormones &amp; Viruses
+• Modifiable lifestyle exposures</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>Limiting exposure to carcinogens is important. Identify two other primary lifestyle factors to avoid or limit (Alphabetical, no spaces):</div>
                     <input type="text" class="lock-input pass" placeholder="FACTOR1FACTOR2" pattern="[Aa]lcohol[Tt]obacco" required>
-                    <div class="unlock-content">✅ Validation Code: 4421</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 4421</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(3)">Next Section (3) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> Primary prevention strategies to reduce cancer risk include avoiding carcinogens, eating a balanced diet, exercising regularly, maintaining a healthy weight, limiting Alcohol intake, and avoiding Tobacco exposure.</div>
+                    </div>
                 </div>
             </div>
 
@@ -374,13 +543,46 @@ Nurse Review: Assessing lifestyle factors that can be modified to stop cell self
                 <h2>PROVIDER ORDERS</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
                 <div class="clinical-note">Patient Goals Discussion.
-Note: Tumor is responsive to therapy, but total eradication is not expected.</div>
+Note: Tumor is responsive to therapy, but total eradication is not expected.
+• Treatment Modalities: The 3 main therapies in oncology are Surgical Therapy, Radiation Therapy, and Chemotherapy. The treatment plan is guided by the overarching clinical goal.</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">Oncology Treatment Goals &amp; Therapeutic Modalities</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Treatment Goal</th>
+                                <th>Clinical Definition &amp; Therapeutic Focus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Goal 1: Cure</td>
+                                <td>Eradicating the cancer completely (e.g., curative surgical resection to remove all malignant tissue).</td>
+                            </tr>
+                            <tr>
+                                <td>Goal 2: [???????]</td>
+                                <td>Cannot completely eradicate the cancer, but the neoplasm is responsive to anticancer therapies to arrest or slow tumor growth.</td>
+                            </tr>
+                            <tr>
+                                <td>Goal 3: Palliation</td>
+                                <td>Symptom control/relief &amp; maintaining quality of life (e.g., palliative procedures such as central line, feeding tube, or pleural drain to alleviate pain/discomfort).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>What is the clinical "goal" name for treatment that reduces tumor burden but doesn't eradicate? (One word):</div>
                     <input type="text" class="lock-input pass" placeholder="TREATMENT GOAL" pattern="[Cc]ontrol" required>
-                    <div class="unlock-content">✅ Validation Code: 1099</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 1099</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(4)">Next Section (4) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> The three primary oncology treatment goals are Cure (complete eradication), Control (cannot completely eradicate, but responsive to anticancer therapies), and Palliation (symptom relief and maintaining quality of life).</div>
+                    </div>
                 </div>
             </div>
 
@@ -389,13 +591,50 @@ Note: Tumor is responsive to therapy, but total eradication is not expected.</di
                 <h2>DIAGNOSTIC IMAGING</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
                 <div class="clinical-note">Radiology Review:
-MRI detected 0.5cm lesion. Nurse performs physical assessment.</div>
+MRI detected 0.5cm lesion. Nurse performs physical assessment.
+• Diagnostic Workup Note: Depending on site, diagnostics include CT, MRI, PET scans, bone marrow examination, and lab tests (complete panels &amp; tumor markers: CEA, CA 125, PSA, AFP). Biopsy remains the only definitive means to diagnose cancer.</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">Tumor Critical Mass &amp; Diagnostic Detection Thresholds</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Detection Modality</th>
+                                <th>Clinical Requirement / Threshold</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>High-Resolution MRI Threshold</td>
+                                <td>0.5 cm tumor — smallest lesion detectable by MRI</td>
+                            </tr>
+                            <tr>
+                                <td>Physical Palpation Threshold</td>
+                                <td>[? cm] tumor — minimum critical mass required to be detected by palpation</td>
+                            </tr>
+                            <tr>
+                                <td>Serum Tumor Markers</td>
+                                <td>CEA, CA 125, PSA, AFP (evaluated alongside complete lab panels)</td>
+                            </tr>
+                            <tr>
+                                <td>Definitive Diagnosis (Biopsy)</td>
+                                <td>Histologic examination of tissue (Anatomic site classification, Histology/Grading severity, Extent/Staging)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>To be detected by palpation, the tumor must reach what size? (Format: #cm):</div>
                     <input type="text" class="lock-input pass" placeholder="ENTER SIZE" pattern="1[Cc][Mm]" required>
-                    <div class="unlock-content">✅ Validation Code: 6019</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 6019</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(5)">Next Section (5) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> To be clinically evident, a tumor must reach a critical mass: 0.5 cm is the smallest tumor detectable by MRI, while a tumor must reach 1 cm to be detected by physical palpation.</div>
+                    </div>
                 </div>
             </div>
 
@@ -404,13 +643,54 @@ MRI detected 0.5cm lesion. Nurse performs physical assessment.</div>
                 <h2>PATHOLOGY REPORT</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
                 <div class="clinical-note">Histology Review:
-Grade: Highly undifferentiated. Stage: Limited local spread.</div>
+Grade: Highly undifferentiated. Stage: Limited local spread.
+• Classification Systems: Standardized way to communicate with the health care team, prepare &amp; evaluate treatment plans, determine prognosis, and compare groups statistically.</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">Classification of Cancer: Histologic Grading &amp; Clinical Staging</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Classification System</th>
+                                <th>Standardized Categories &amp; Definitions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Anatomic Site Classification</td>
+                                <td>Identified by tissue of origin &amp; anatomic site: Carcinomas vs. Sarcomas vs. Lymphomas &amp; Leukemias</td>
+                            </tr>
+                            <tr>
+                                <td>Histologic / Grading
+(Aggressiveness &amp; Differentiation)</td>
+                                <td>• Grade I (1): Lowest grade — cells most resemble original mature cell
+• Grade II–III (2–3): Moderately to poorly differentiated
+• Grade IV (4): Highest grade — highly undifferentiated, immature cells</td>
+                            </tr>
+                            <tr>
+                                <td>Clinical Staging
+(Extent &amp; Spread of Disease)</td>
+                                <td>• Stage 0: Cancer in situ
+• Stage I (1): Tumor limited to tissue of origin; localized tumor growth
+• Stage II (2): Limited local spread
+• Stage III (3): Extensive local &amp; regional spread
+• Stage IV (4): Metastasis (TNM System: Tumor size, Nodes, Metastasis)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>Provide the specific Stage # and Grade # (Format: S#G#):</div>
                     <input type="text" class="lock-input pass" placeholder="E.G. S1G1" pattern="[Ss]2[Gg]4" required>
-                    <div class="unlock-content">✅ Validation Code: 7741</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 7741</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(6)">Next Section (6) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> Stage II (S2) indicates limited local spread, and Grade IV (G4) is the highest histologic grade indicating highly undifferentiated, aggressive malignant cells.</div>
+                    </div>
                 </div>
             </div>
 
@@ -419,13 +699,52 @@ Grade: Highly undifferentiated. Stage: Limited local spread.</div>
                 <h2>RADIATION ALERT</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
                 <div class="clinical-note">Safety Protocol: Brachytherapy in use.
-Nurse must maintain safety while providing care.</div>
+Nurse must maintain safety while providing care.
+• Radiation Therapy Overview: Calculated, localized treatment resulting in cell death (most vulnerable normal tissues: lymph, GI, hair/skin, bone marrow, reproductive organs). Unlike external teletherapy, a patient with internal brachytherapy is actively emitting radioactivity.</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">External (Teletherapy) vs. Internal (Brachytherapy) Radiation</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>External Radiation (Teletherapy)</th>
+                                <th>Internal Radiation (Brachytherapy)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Source &amp; Delivery</td>
+                                <td>Exposure from a machine (Low-energy beams for skin lesions; High-energy beams penetrate greater depth for internal targets). Delivered 1x/day, 5 days/wk for 2–8 wks.</td>
+                                <td>Implanted directly into or close to the tumor. Minimal exposure to healthy tissue; often combined w/ external radiation.</td>
+                            </tr>
+                            <tr>
+                                <td>Radioactivity Status</td>
+                                <td>Patient is NOT radioactive. Keep skin marks outlining treatment field; immobilize &amp; protect critical areas.</td>
+                                <td>Patient IS emitting radioactivity! Proper disposal of materials required.</td>
+                            </tr>
+                            <tr>
+                                <td>Nursing Safety Precautions</td>
+                                <td>Standard precautions; skin care within marked field.</td>
+                                <td>• Organize care to limit amount of time near patient
+• Maintain safe distance &amp; use shielding
+• Wear Dosimeter badge to monitor exposure</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>List the 3 Safety Principles for Internal Radiation (Alphabetical, no spaces):</div>
                     <input type="text" class="lock-input pass" placeholder="P1P2P3" pattern="[Dd]istance[Ss]hielding[Tt]ime" required>
-                    <div class="unlock-content">✅ Validation Code: 2209</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 2209</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(7)">Next Section (7) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> When caring for a patient receiving internal radiation (Brachytherapy) who is emitting radioactivity, nurses must follow the 3 radiation safety principles: Distance, Shielding, and Time (along with wearing a Dosimeter badge).</div>
+                    </div>
                 </div>
             </div>
 
@@ -434,13 +753,48 @@ Nurse must maintain safety while providing care.</div>
                 <h2>LAB RESULTS: TLS</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
                 <div class="clinical-note">Urgent Findings: Tumor Lysis Syndrome suspected.
-Check electrolytes for specific hallmarks.</div>
+Check electrolytes for specific hallmarks.
+• Oncologic Emergency Note: Rapid destruction of a large number of cancer cells causes sudden release of intracellular contents into the systemic circulation.</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">Life-Threatening Oncologic Complications Comparison</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Oncologic Emergency</th>
+                                <th>Pathophysiology &amp; Clinical Manifestations</th>
+                                <th>Medical &amp; Nursing Management</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Hypercalcemia</td>
+                                <td>Occurs with bone metastasis (&darr; physical mobility worsens hypercalcemia).
+• Early S&amp;S: Fatigue, anorexia, N/V, constipation
+• Later S&amp;S: Muscle weakness, paralytic ileus, ECG changes</td>
+                                <td>Monitor serum calcium levels; treat w/ IV fluids &amp; medications to &darr; calcium; prepare for dialysis if life-threatening.</td>
+                            </tr>
+                            <tr>
+                                <td>Tumor Lysis Syndrome (TLS)</td>
+                                <td>Large # of cancer cells dying releases intracellular contents into blood.
+• 4 Hallmark Imbalances: Hypocalcemia + 3 "Hyper-" conditions</td>
+                                <td>Treat w/ aggressive IV hydration, Allopurinol, &amp; potassium-lowering measures (KIND).</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>List the 3 "Hyper-" conditions found in TLS (Alphabetical, no spaces):</div>
                     <input type="text" class="lock-input pass" placeholder="HYPER...HYPER...HYPER..." pattern="[Hh]yperkalemia[Hh]yperphosphatemia[Hh]yperuricemia" required>
-                    <div class="unlock-content">✅ Validation Code: 9115</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 9115</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(8)">Next Section (8) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> The 4 hallmark electrolyte imbalances of Tumor Lysis Syndrome (TLS) are Hypocalcemia and the 3 "Hyper-" conditions: Hyperkalemia, Hyperphosphatemia, and Hyperuricemia.</div>
+                    </div>
                 </div>
             </div>
 
@@ -449,50 +803,140 @@ Check electrolytes for specific hallmarks.</div>
                 <h2>MAR (MEDICATION ADMINISTRATION)</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
                 <div class="clinical-note">Medication: Procrit (Erythropoietin) subcutaneously once weekly. 
-Dosing Instruction: Monitor Hemoglobin (HGB).</div>
+Dosing Instruction: Monitor Hemoglobin (HGB).
+• Chemotherapy Delayed Effects: Bone marrow suppression occurs days to months after administration, affecting RBCs (anemia/overwhelming fatigue), WBCs (infection), and Platelets (hemorrhage).</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">Chemotherapy Bone Marrow Suppression &amp; Supportive MAR</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Cell Line Affected</th>
+                                <th>Clinical Complication</th>
+                                <th>Supportive Care &amp; Medication Protocol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Red Blood Cells (RBCs)</td>
+                                <td>Anemia &amp; Overwhelming Fatigue</td>
+                                <td>• Energy conservation: Rest before activity, maintain sleep regimen, get assistance w/ activity
+• Anemia Treatment: PRBC Transfusion or CSF/Procrit (Erythropoietin) — Hold at or above HGB threshold</td>
+                            </tr>
+                            <tr>
+                                <td>White Blood Cells (WBCs)</td>
+                                <td>Leukopenia / Neutropenia (High Infection Risk)</td>
+                                <td>• Hand hygiene, reverse isolation (mask), prophylactic antibiotics
+• CSFs for WBCs: Neupogen (Filgrastim)</td>
+                            </tr>
+                            <tr>
+                                <td>Platelets (Thrombocytes)</td>
+                                <td>Thrombocytopenia (Hemorrhage Risk)</td>
+                                <td>• Bleeding precautions, monitor platelet counts, avoid invasive trauma</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>Hold Procrit if Hemoglobin is at or above what value? (Format: HGB##):</div>
                     <input type="text" class="lock-input pass" placeholder="HGB??" pattern="[Hh][Gg][Bb]11" required>
-                    <div class="unlock-content">✅ Validation Code: 0462</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 0462</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(9)">Next Section (9) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> Erythropoiesis-stimulating agents like Procrit (Epoetin alfa) increase the risk of thromboembolic events if hemoglobin rises too high and must be held if Hemoglobin is at or above 11 g/dL (HGB11).</div>
+                    </div>
                 </div>
             </div>
 
             <!-- 9. VITALS -->
             <div id="puzzle9" class="puzzle-section">
-                <h2>VITAL SIGNS & PRECAUTIONS</h2><hr>
+                <h2>VITAL SIGNS &amp; PRECAUTIONS</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
                 <div class="clinical-note">Assessment: Low WBC count noted (Bone Marrow Suppression).
-Risk: Infection.</div>
+Risk: Infection.
+• Nursing Care Note: Nursing plays a key role in helping patients deal with chemotherapy and radiation side effects, prioritizing infection prevention in myelosuppressed patients.</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">Nursing Care for Chemotherapy &amp; Radiation Side Effects</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Clinical Priority</th>
+                                <th>Evidence-Based Nursing Interventions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Preventing Infection
+(Bone Marrow Suppression)</td>
+                                <td>• Strict hand hygiene
+• Place patient in [??????? ?????????] — mask required
+• Administer prophylactic antibiotics &amp; CSFs for WBCs (Neupogen)</td>
+                            </tr>
+                            <tr>
+                                <td>Nausea / Vomiting
+(Acute Toxicity)</td>
+                                <td>• Best management is prevention w/ Antiemetics (2–3 different drugs)
+• Adjunctive treatment: Maintain hydration &amp; avoid triggering stimuli</td>
+                            </tr>
+                            <tr>
+                                <td>Altered GI Tract
+(Diarrhea)</td>
+                                <td>• Diet: Foods that bulk stool, avoid foods w/ sorbitol, &uarr; in K+ &amp; Na+ &amp; &uarr; fluids (8–10 8oz glasses of liquid daily)
+• Mild/Mod: Loperamide (Imodium) | Severe: Octreotide (Sandostatin)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>Specific precaution required for this patient's environment? (Two words, no spaces):</div>
                     <input type="text" class="lock-input pass" placeholder="PRECAUTION TYPE" pattern="[Rr]everse[Ii]solation" required>
-                    <div class="unlock-content">✅ Validation Code: 3004</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 3004</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(10)">Next Section (10) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> Patients with chemotherapy-induced bone marrow suppression and low WBC counts require Reverse Isolation (protective environment with mask precautions) and strict hand hygiene to prevent life-threatening infection.</div>
+                    </div>
                 </div>
             </div>
 
             <!-- 10. NURSING -->
             <div id="puzzle10" class="puzzle-section">
                 <h2>NURSING ASSESSMENT: DESQUAMATION</h2><hr>
-                <div class="clue-label">📄 CLINICAL CLUE (FLOWCHART)</div>
+                <div class="clue-label">📄 CLINICAL CLUE</div>
+                <div class="clinical-note">Radiation Skin Reactions — Desquamation:
+• Patient Teaching for Radiation Field: No tight garments, harsh chemicals, or deodorants, and protect skin from temperature extremes.
+• Evaluate the progression from Dry Reaction to Wet Reaction in the clinical flowchart below:</div>
+
+                <div class="clue-label">📊 CLINICAL CLUE (FLOWCHART)</div>
                 <div class="flow-container">
-                    <div class="flow-box"><strong>DRY REACTION</strong><br><small>Ecchymosis / Brusing</small></div>
+                    <div class="flow-box"><strong>DRY REACTION</strong><br><small>Ecchymosis / Bruising</small></div>
                     <div class="flow-arrow">⬇️</div>
-                    <div class="flow-box">Nonirritating Alcohol-Free Lotion</div>
+                    <div class="flow-box"><strong>Nonirritating Alcohol-Free Lotion</strong><br><small>Lubricate with solution containing NO alcohol or perfume</small></div>
                     <div class="flow-arrow">⬇️</div>
-                    <div class="flow-box" style="background: #fff3e0;"><strong>WET REACTION</strong><br><small>Excoriated / "Sun burn"</small></div>
+                    <div class="flow-box" style="background: #fff3e0;"><strong>WET REACTION</strong><br><small>Excoriated / "Sun burn" — Prevent infection &amp; facilitate wound healing</small></div>
                     <div class="flow-arrow">⬇️</div>
-                    <div class="flow-box" style="border-style: dashed;">?? MISSING TREATMENT ??</div>
+                    <div class="flow-box" style="border-style: dashed;"><strong>?? MISSING TREATMENT ??</strong><br><small>Keep clean &amp; protected with required PRN dressing</small></div>
                 </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>What is the required dressing for wet desquamation? (Two words, no spaces):</div>
                     <input type="text" class="lock-input pass" placeholder="DRESSING TYPE" pattern="[Ss]terile[Gg]auze" required>
-                    <div class="unlock-content">✅ Validation Code: 3382</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 3382</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(11)">Next Section (11) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> While dry desquamation is lubricated with nonirritating lotion containing no alcohol or perfume, wet desquamation (excoriated, "sun burn") must be kept clean and protected using a Sterile Gauze dressing PRN to prevent infection and facilitate wound healing.</div>
+                    </div>
                 </div>
             </div>
 
@@ -500,14 +944,55 @@ Risk: Infection.</div>
             <div id="puzzle11" class="puzzle-section">
                 <h2>PATIENT EDUCATION</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
-                <div class="clinical-note">Focus: Oral Care & Stomatitis.
-Avoid alcohol-based mouthwash.</div>
+                <div class="clinical-note">Focus: Oral Care &amp; Stomatitis.
+Avoid alcohol-based mouthwash.
+• Mucositis / Esophagitis / Stomatitis Note: Mucosal inflammation can have a major negative impact on speech and nutrition (difficulties related to tasting, chewing, and swallowing) and must be addressed quickly and effectively.</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">Patient Education: Mucositis/Stomatitis, Nutrition &amp; Alopecia</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Care Domain</th>
+                                <th>Nursing Teaching &amp; Interventions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mucositis / Esophagitis / Stomatitis</td>
+                                <td>• &darr; Pain through analgesics or topical anesthetics (Alcohol-free Chlorhexidine, normal saline, lidocaine)
+• Frequent oral care (soft brushes, gauze, cotton swabs, waterpiks)
+• Keep lips/mouth moist (saliva substitutes or drink water frequently)
+• Avoid [?????????] (extreme temperatures, alcohol, citric acid, tobacco)</td>
+                            </tr>
+                            <tr>
+                                <td>Nutrition Support</td>
+                                <td>• Monitor daily weights &amp; loss of taste
+• Small, frequent, soft, nonirritating, high-calorie / high-protein meals
+• Nutritional supplements (Ensure, PN or EN)</td>
+                            </tr>
+                            <tr>
+                                <td>Alopecia
+(Hair Loss)</td>
+                                <td>• Usually reversible 2–3 months after treatment ends
+• For longer hair, helps to cut prior to loss
+• Protect head from hot (sun) &amp; cold; wear a scarf while sleeping</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>Category of substances to AVOID for stomatitis? (One word):</div>
                     <input type="text" class="lock-input pass" placeholder="AVOID WHAT?" pattern="[Ii]rritants" required>
-                    <div class="unlock-content">✅ Validation Code: 5510</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 5510</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(12)">Next Section (12) &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> Patients with stomatitis/mucositis must avoid Irritants—specifically extreme temperatures, alcohol (including alcohol-based mouthwashes), citric acid, and tobacco.</div>
+                    </div>
                 </div>
             </div>
 
@@ -515,14 +1000,60 @@ Avoid alcohol-based mouthwash.</div>
             <div id="puzzle12" class="puzzle-section">
                 <h2>CARE TEAM</h2><hr>
                 <div class="clue-label">📄 CLINICAL CLUE</div>
-                <div class="clinical-note">Scenario: Patient has terminal disease prognosis < 6 months.
-Family needs intensive support.</div>
+                <div class="clinical-note">Scenario: Patient has terminal disease prognosis &lt; 6 months.
+Family needs intensive support.
+• Care Team &amp; Survivorship Note: Treatment requires the support of an ENTIRE team (Oncologist Medical Specialists, Oncology &amp; Infusion Nursing Team, and Supportive Care Team: RD, PT, ST, Social Worker, Counselors).</div>
+
+                <div class="ehr-table-box">
+                    <div class="ehr-table-title">Continuum of Comfort Care &amp; Advanced Directives</div>
+                    <table class="ehr-table">
+                        <thead>
+                            <tr>
+                                <th>Care Philosophy / Directive</th>
+                                <th>Clinical Scope &amp; Interventions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Palliative Care</td>
+                                <td>Focus on comfort &amp; quality of life for severe illnesses (acute or chronic: end-stages of HF, COPD, CKD, Cancer, Neurodegenerative). Can start at any time and run concurrent w/ medical/curative treatment.</td>
+                            </tr>
+                            <tr>
+                                <td>[???????] Care
+(Subcategory of Palliative Care)</td>
+                                <td>Focus on comfort &amp; quality of life measures for patients with terminal disease (&lt; 6 months), along with intensive support for family/caregivers. Provided in home or institution by multidisciplinary team.</td>
+                            </tr>
+                            <tr>
+                                <td>End of Life Care
+(Subcategory of above)</td>
+                                <td>Focus on comfort care:
+• Pain: SL Opioid (Morphine, oxycodone)
+• Anxiety: SL Benzo (Lorazepam solution)
+• Secretions: SL Anticholinergic (Atropine drops)
+• Breathing / Air Hunger / Agonal Breathing: SL Morphine
+• Family: Bereavement (grieving &amp; mourning)</td>
+                            </tr>
+                            <tr>
+                                <td>Advanced Directives</td>
+                                <td>• Power of Attorney (POA): Proxy makes decisions
+• Living Will: Documented wishes of treatment decisions
+• DNR: CCA (Comfort Care Arrest) vs. CC (Comfort Care)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 
                 <div class="lock-container">
                     <div class="task-label">🎯 NURSING TASK</div>
                     <div>Palliative care subcategory for this philosophy? (One word):</div>
                     <input type="text" class="lock-input pass" placeholder="TYPE OF CARE" pattern="[Hh]ospice" required>
-                    <div class="unlock-content">✅ Validation Code: 1201</div>
+                    <div class="unlock-content">
+                        <div class="unlock-header">
+                            <span>✅ Validation Code: 1201</span>
+                            <button type="button" class="next-tab-btn" onclick="goToTab(13)">Proceed to Discharge Summary &rarr;</button>
+                        </div>
+                        <div class="unlock-rationale"><strong>Clinical Rationale:</strong> Hospice Care is the subcategory of Palliative Care focused on comfort and quality of life for patients with a terminal disease prognosis of less than 6 months, providing intensive physical and emotional support for both the patient and family/caregivers.</div>
+                    </div>
                 </div>
             </div>
 
@@ -571,6 +1102,25 @@ Family needs intensive support.</div>
 
 <script>
     const finalAnswers = ["8812", "4421", "1099", "6019", "7741", "2209", "9115", "0462", "3004", "3382", "5510", "1201"];
+
+    document.querySelectorAll('.puzzle-section input.pass').forEach((input, idx) => {
+        input.addEventListener('input', function() {
+            if (this.checkValidity()) {
+                const verificationInputs = document.getElementById('verification-inputs').getElementsByTagName('input');
+                if (verificationInputs[idx]) {
+                    verificationInputs[idx].value = finalAnswers[idx];
+                }
+            }
+        });
+    });
+
+    function goToTab(num) {
+        const radio = document.getElementById('tab' + num);
+        if (radio) {
+            radio.checked = true;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
 
     function checkFinalCodes() {
         const inputs = document.getElementById('verification-inputs').getElementsByTagName('input');
